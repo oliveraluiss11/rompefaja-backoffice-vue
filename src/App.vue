@@ -11,8 +11,8 @@
 </template>
 
 <script setup lang="ts">
-import SideBarComponent from './components/SideBarComponent.vue'
 import TopBar from './components/TopBar.vue'
+import SideBarComponent from './components/SidebarComponent.vue';
 </script>
 
 <style>
