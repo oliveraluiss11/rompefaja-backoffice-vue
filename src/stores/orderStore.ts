@@ -14,7 +14,7 @@ import type { Customization, Order, OrderItem, OrderStatus } from '@/types/order
 import { isWithinInterval, startOfDay, endOfDay } from 'date-fns'
 import { orderService } from '@/services/orderService'
 import { db } from '@/repositories/firebaseConfig'
-
+const notificationSound = new Audio('/notification-rompefaja.mp3')
 interface OrderState {
   orders: Order[]
   loading: boolean
@@ -104,6 +104,9 @@ export const useOrderStore = defineStore('order', () => {
       timestamp: new Date(),
     }
     state.value.notifications.push(notification)
+    notificationSound
+      .play()
+      .catch((error) => console.error('Error playing notification sound:', error))
     setTimeout(() => removeNotification(notification.id), 5000)
   }
 
