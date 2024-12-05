@@ -22,6 +22,7 @@ interface OrderState {
   dateRange: [Date | null, Date | null]
   notifications: Notification[]
   lastProcessedOrderIds: Set<number>
+  soundEnabled: boolean
 }
 
 interface Notification {
@@ -39,6 +40,7 @@ export const useOrderStore = defineStore('order', () => {
     dateRange: [null, null],
     notifications: [],
     lastProcessedOrderIds: new Set(),
+    soundEnabled: false,
   })
 
   const filteredOrders = computed(() => {
@@ -104,14 +106,20 @@ export const useOrderStore = defineStore('order', () => {
       timestamp: new Date(),
     }
     state.value.notifications.push(notification)
-    notificationSound
-      .play()
-      .catch((error) => console.error('Error playing notification sound:', error))
+    if (state.value.soundEnabled) {
+      notificationSound
+        .play()
+        .catch((error) => console.error('Error playing notification sound:', error))
+    }
     setTimeout(() => removeNotification(notification.id), 5000)
   }
 
   function removeNotification(id: string): void {
     state.value.notifications = state.value.notifications.filter((n) => n.id !== id)
+  }
+
+  function toggleSound(): void {
+    state.value.soundEnabled = !state.value.soundEnabled
   }
 
   async function fetchOrders(): Promise<void> {
@@ -252,5 +260,6 @@ export const useOrderStore = defineStore('order', () => {
     addNotification,
     removeNotification,
     getStatusLabel,
+    toggleSound,
   }
 })
