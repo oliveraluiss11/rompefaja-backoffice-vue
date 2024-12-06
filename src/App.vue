@@ -1,18 +1,25 @@
 <template>
-  <div class="flex h-screen bg-[#F4F5F7]">
-    <SideBarComponent />
-    <div class="flex flex-col flex-1 overflow-hidden">
-      <TopBar />
-      <main class="flex-1 overflow-x-hidden overflow-y-auto">
-        <router-view></router-view>
-      </main>
+  <template v-if="authStore.isAuthenticated">
+    <div class="flex h-screen bg-[#F4F5F7]">
+
+      <SideBarComponent />
+      <div class="flex flex-col flex-1 overflow-hidden">
+        <TopBar />
+        <main class="flex-1 overflow-x-hidden overflow-y-auto">
+          <router-view></router-view>
+        </main>
+      </div>
     </div>
-  </div>
+  </template>
+  <LoginView v-else />
 </template>
 
 <script setup lang="ts">
 import TopBar from './components/TopBar.vue'
 import SideBarComponent from './components/SidebarComponent.vue';
+import LoginView from '@/views/LoginView.vue'
+import { useAuthStore } from './stores/authStore';
+const authStore = useAuthStore()
 </script>
 
 <style>
